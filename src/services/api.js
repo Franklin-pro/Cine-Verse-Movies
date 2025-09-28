@@ -9,7 +9,7 @@ export const getTrendingMovies = async () => {
     const data = await response.json();
     return data.results;
   } catch (error) {
-    console.error("Error fetching movies:", error);
+    console.error("Error fetching movies week:", error);
     return [];
   }
 };
