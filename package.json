@@ -7,6 +7,7 @@
     "dev": "vite",
     "build": "vite build",
     "lint": "eslint .",
+    "preinstall": "npm cache clean --force",
     "preview": "vite preview"
   },
   "dependencies": {
