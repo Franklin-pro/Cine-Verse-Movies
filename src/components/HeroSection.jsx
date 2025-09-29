@@ -7,8 +7,13 @@ function HeroSection() {
   const { trendingMovies, loading } = useMovies();
   const [currentSlide, setCurrentSlide] = useState(0);
   const [isTransitioning, setIsTransitioning] = useState(false);
+    const {openMovieDetails} = useMovies();
 
   const featureTrendingMovies = trendingMovies.slice(0, 5);
+
+    const handleMovieClick = (movieId)=>{
+    openMovieDetails(movieId);
+  }
 
   useEffect(() => {
     if (loading || featureTrendingMovies.length === 0) return;
@@ -24,7 +29,6 @@ function HeroSection() {
     return () => clearInterval(interval);
   }, [loading, featureTrendingMovies.length]);
 
-  // ✅ Loading state
   if (loading) {
     return (
       <div className="flex items-center justify-center h-screen bg-neutral-900 text-white">
@@ -34,7 +38,6 @@ function HeroSection() {
     );
   }
 
-  // ✅ If no movies found
   if (!loading && featureTrendingMovies.length === 0) {
     return (
       <div className="flex items-center justify-center h-screen bg-neutral-900 text-white">
@@ -43,27 +46,23 @@ function HeroSection() {
     );
   }
 
-  // Active movie - use consistent variable name
   const activeMovie = featureTrendingMovies[currentSlide];
+
 
   return (
     <div className="relative w-full h-screen">
-      {/* Backdrop - Use backdrop_path instead of poster_path */}
       <div
         className={`absolute inset-0 bg-cover bg-center transition-opacity duration-700 ${
           isTransitioning ? "opacity-0" : "opacity-100"
-          
         }`}
         style={{
           backgroundImage: `url(https://image.tmdb.org/t/p/original${activeMovie.backdrop_path})`,
         }}
       >
-        {/* Gradient overlays */}
         <div className="absolute inset-0 bg-gradient-to-r from-neutral-900 via-neutral-900/70 to-neutral-900/20" />
         <div className="absolute inset-0 bg-gradient-to-t from-neutral-900 via-transparent to-neutral-900/30" />
       </div>
 
-      {/* Content */}
       <div className="absolute inset-0 flex items-center z-10 container mx-auto px-4">
         <div className="max-w-3xl">
           <div
@@ -73,60 +72,54 @@ function HeroSection() {
             }`}
             onTransitionEnd={() => setIsTransitioning(false)}
           >
-            {/* Movie meta info */}
             <div className="flex items-center flex-wrap space-x-3 mb-4 text-sm">
               <span className="bg-blue-500/90 text-white font-semibold px-2 py-0.5 rounded-sm">
-                FEATUblue
+                FEATURED
               </span>
-
-              {/* Rating */}
               <div className="flex items-center text-neutral-300">
                 <Star className="w-4 h-4 text-yellow-500 mr-1" />
                 <span>{activeMovie.vote_average?.toFixed(1) ?? "N/A"}</span>
               </div>
-
               <span className="text-neutral-400">•</span>
-
-              {/* Release Date */}
               <span className="text-neutral-300">
                 {activeMovie.release_date || "Unknown"}
               </span>
-
               <span className="text-neutral-400">•</span>
-
-              {/* Age Rating */}
-              <span className={`${activeMovie.adult ? 'bg-blue-500/80' : 'bg-green-500/80'} text-white text-xs px-2 py-0.5 rounded`}>
-                {activeMovie.adult ? '18+' : 'PG'}
+              <span
+                className={`${
+                  activeMovie.adult ? "bg-blue-500/80" : "bg-green-500/80"
+                } text-white text-xs px-2 py-0.5 rounded`}
+              >
+                {activeMovie.adult ? "18+" : "PG"}
               </span>
             </div>
 
-            {/* Title */}
             <h1 className="text-4xl md:text-6xl font-bold text-white mb-4">
               {activeMovie.title || activeMovie.name}
             </h1>
 
-            {/* Overview */}
             <p className="text-neutral-300 text-base md:text-lg mb-8 line-clamp-3 md:line-clamp-4 max-w-2xl">
               {activeMovie.overview}
             </p>
 
-            {/* Actions */}
             <div className="flex flex-wrap gap-4">
-              <button className="bg-blue-600 px-4 py-2 hover:bg-blue-700 text-white rounded-lg flex items-center gap-2 transition-all">
+              <button
+                onClick={() => handleMovieClick(activeMovie.id)}
+                className="bg-blue-600 px-4 py-2 hover:bg-blue-700 text-white rounded-lg flex items-center gap-2 transition-all"
+              >
                 <PlayCircle />
                 Watch Now
               </button>
-
+{/* 
               <button className="bg-neutral-800/80 px-4 py-2 hover:bg-neutral-800 text-white rounded-lg flex items-center gap-2 transition-all">
                 <PlusCircle />
                 Add to Watchlist
-              </button>
+              </button> */}
             </div>
           </div>
         </div>
       </div>
 
-      {/* Pagination dots */}
       <div className="absolute bottom-6 right-0 left-0 flex justify-center gap-2 z-10">
         {featureTrendingMovies.map((_, idx) => (
           <button

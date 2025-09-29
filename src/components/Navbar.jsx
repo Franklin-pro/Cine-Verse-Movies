@@ -10,52 +10,69 @@ const Navbar = () => {
   const [results, setResults] = useState([]);
   const [isSearching, setIsSearching] = useState(false);
   const [searchError, setSearchError] = useState(null);
- const { openMovieDetails } = useMovies()
+  const { openMovieDetails } = useMovies();
 
   const toggleMenu = () => setIsOpen(!isOpen);
 
+  // Navigation items
+  const navItems = [
+    { id: "home", label: "Home" },
+    { id: "movies", label: "Movies" },
+    { id: "topRated", label: "Top Rated" },
+    { id: "trending", label: "Trending" },
+    { id: "popular", label: "Popular" }
+  ];
+
+  // Smooth scroll to section
+  const scrollToSection = (sectionId) => {
+    const element = document.getElementById(sectionId);
+    if (element) {
+      element.scrollIntoView({ behavior: "smooth" });
+    }
+    setIsOpen(false);
+  };
+
   // Debounced search function
-  const getSearchResults = useCallback(
-    async (searchQuery) => {
-      if (!searchQuery.trim()) {
-        setResults([]);
-        setSearchError(null);
-        return;
-      }
-
-      setIsSearching(true);
+  const getSearchResults = useCallback(async (searchQuery) => {
+    if (!searchQuery.trim()) {
+      setResults([]);
       setSearchError(null);
+      return;
+    }
 
-      try {
-        const data = await searchMovies(searchQuery);
-        setResults(data || []);
-        query && setSearchError(data.length === 0 ? "No results found" : null);
-      } catch (error) {
-        console.error("Search error:", error);
-        setSearchError("Failed to search movies");
-        setResults([]);
-      } finally {
-        setIsSearching(false);
-      }
-    },
-    [query]
-  );
+    setIsSearching(true);
+    setSearchError(null);
 
-  // ✅ Handle selecting a movie
-// ✅ Handle selecting a movie
-const handleMovieSelect = (movie) => {
-  setQuery(movie.title);
-  openMovieDetails(movie.id)
-  setResults([]);
-  setSearchError(null);
-};
+    try {
+      const data = await searchMovies(searchQuery);
+      setResults(data || []);
+      setSearchError(data.length === 0 ? "No results found" : null);
+    } catch (error) {
+      console.error("Search error:", error);
+      setSearchError("Failed to search movies");
+      setResults([]);
+    } finally {
+      setIsSearching(false);
+    }
+  }, []);
 
+  // Handle selecting a movie
+  const handleMovieSelect = (movie) => {
+    setQuery(movie.title);
+    openMovieDetails(movie.id);
+    setResults([]);
+    setSearchError(null);
+    setIsOpen(false);
+    
+    // Scroll to top to ensure movie details are visible
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  };
 
   // Debounce search input
   useEffect(() => {
     const delayDebounceFn = setTimeout(() => {
       getSearchResults(query);
-    }, 500); // 500ms delay
+    }, 500);
 
     return () => clearTimeout(delayDebounceFn);
   }, [query, getSearchResults]);
@@ -67,11 +84,11 @@ const handleMovieSelect = (movie) => {
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
-  const clearSearch = () => {
-    setQuery("");
-    setResults([]);
-    setSearchError(null);
-  };
+  // const clearSearch = () => {
+  //   setQuery("");
+  //   setResults([]);
+  //   setSearchError(null);
+  // };
 
   return (
     <header
@@ -81,22 +98,25 @@ const handleMovieSelect = (movie) => {
     >
       <div className="container mx-auto flex items-center justify-between px-4 gap-2 py-3">
         {/* Logo */}
-        <a href="/" className="flex items-center space-x-1">
+        <button 
+          onClick={() => scrollToSection("home")}
+          className="flex items-center space-x-1 focus:outline-none"
+        >
           <span className="text-blue-500 font-bold text-2xl">Cine</span>
           <span className="text-white font-bold text-2xl">Verse</span>
-        </a>
+        </button>
 
-        {/* Desktop Nav */}
+        {/* Desktop Navigation */}
         <nav className="hidden md:flex items-center space-x-8">
-          {["Home", "Movies", "Top Rated", "Trending", "Popular"].map((link) => (
-            <a
-              key={link}
-              href={`#${link.toLowerCase().replace(" ", "")}`}
-              className="relative text-white hover:text-blue-500 transition group"
+          {navItems.map((item) => (
+            <button
+              key={item.id}
+              onClick={() => scrollToSection(item.id)}
+              className="relative text-white hover:text-blue-500 transition group focus:outline-none"
             >
-              {link}
+              {item.label}
               <span className="absolute left-0 -bottom-1 h-0.5 w-0 bg-blue-500 transition-all duration-300 group-hover:w-full"></span>
-            </a>
+            </button>
           ))}
         </nav>
 
@@ -112,7 +132,6 @@ const handleMovieSelect = (movie) => {
             />
             <Search className="absolute right-3 top-2.5 w-4 h-4 text-neutral-400" />
 
-            {/* Loading indicator */}
             {isSearching && (
               <div className="absolute right-10 top-2.5">
                 <div className="w-4 h-4 border-2 border-blue-500 border-t-transparent rounded-full animate-spin"></div>
@@ -120,7 +139,7 @@ const handleMovieSelect = (movie) => {
             )}
           </div>
 
-          {/* Search results dropdown */}
+          {/* Search Results Dropdown */}
           {(query && (results.length > 0 || isSearching || searchError)) && (
             <div className="absolute mt-2 w-full bg-neutral-800 rounded-lg shadow-lg z-50 max-h-80 overflow-y-auto">
               {isSearching ? (
@@ -142,7 +161,7 @@ const handleMovieSelect = (movie) => {
                       className="hover:bg-neutral-700 transition-colors"
                     >
                       <button
-                        className="w-full text-left px-4 py-3 text-sm flex items-center space-x-3"
+                        className="w-full text-left px-4 py-3 text-sm flex items-center space-x-3 focus:outline-none"
                         onClick={() => handleMovieSelect(movie)}
                       >
                         <img
@@ -191,22 +210,19 @@ const handleMovieSelect = (movie) => {
         </button>
       </div>
 
-      {/* Mobile Nav */}
+      {/* Mobile Navigation */}
       {isOpen && (
         <div className="md:hidden bg-neutral-900 border-t border-neutral-700">
           <nav className="flex flex-col space-y-2 px-4 py-3">
-            {["Home", "Movies", "Top Rated", "Trending", "Popular"].map(
-              (link) => (
-                <a
-                  key={link}
-                  href={`#${link.toLowerCase().replace(" ", "")}`}
-                  className="text-white hover:text-blue-500 transition py-2"
-                  onClick={() => setIsOpen(false)}
-                >
-                  {link}
-                </a>
-              )
-            )}
+            {navItems.map((item) => (
+              <button
+                key={item.id}
+                onClick={() => scrollToSection(item.id)}
+                className="text-white hover:text-blue-500 transition py-2 text-left focus:outline-none"
+              >
+                {item.label}
+              </button>
+            ))}
 
             {/* Mobile Search */}
             <div className="relative mt-3">
@@ -227,7 +243,7 @@ const handleMovieSelect = (movie) => {
                 )}
               </div>
 
-              {/* Mobile search results */}
+              {/* Mobile Search Results */}
               {(query && (results.length > 0 || isSearching || searchError)) && (
                 <div className="absolute mt-2 w-full bg-neutral-800 rounded-lg shadow-lg z-50 max-h-64 overflow-y-auto">
                   {isSearching ? (
@@ -249,11 +265,8 @@ const handleMovieSelect = (movie) => {
                           className="hover:bg-neutral-700 transition-colors"
                         >
                           <button
-                            className="w-full text-left px-4 py-3 text-sm flex items-center space-x-3"
-                            onClick={() => {
-                              handleMovieSelect(movie);
-                              setIsOpen(false);
-                            }}
+                            className="w-full text-left px-4 py-3 text-sm flex items-center space-x-3 focus:outline-none"
+                            onClick={() => handleMovieSelect(movie)}
                           >
                             <img
                               src={

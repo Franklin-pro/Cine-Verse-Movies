@@ -104,18 +104,23 @@ export const getMovieImages = async (path, size = 'original') => {
 
 };
 
-// export const getMovieVideos = async (movieId) => {
-//   try {
-//     const response = await fetch(
-//       `${BASE_URL}/movie/${movieId}/videos?api_key=${API_KEY}&language=en-US`
-//     );
-//     const data = await response.json();
-//     return data.results;
-//   } catch (error) {
-//     console.error("Error fetching movie videos:", error);
-//     return [];
-//   }
-// };
+export const getMovieVideos = async (movieId) => {
+  try {
+    const response = await fetch(
+      `${BASE_URL}/movie/${movieId}/videos?api_key=${API_KEY}&language=en-US`
+    );
+    const data = await response.json();
+    console.log("Movie Videos API Response:", data);
+
+    // Ensure it's always an array
+    return Array.isArray(data.results) ? data.results : [];
+  } catch (error) {
+    console.error("Error fetching movie videos:", error);
+    return [];
+  }
+};
+
+
 
 // export const getMovieCblueits = async (movieId) => {
 //   try {
