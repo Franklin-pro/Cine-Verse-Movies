@@ -169,6 +169,18 @@ export const getMovieVideos = async (movieId) => {
   }
 };
 
+export const getSeriesVideos = async (seriesId) => {
+  try {
+    const response = await fetch(
+      `${BASE_URL}/tv/${seriesId}/videos?api_key=${API_KEY}&language=en-US`
+    );
+    const data = await response.json();
+    return data.results;
+  } catch (error) {
+    console.error("Error fetching series videos:", error);
+    return [];
+  }
+};
 
 
 // export const getMovieCblueits = async (movieId) => {
