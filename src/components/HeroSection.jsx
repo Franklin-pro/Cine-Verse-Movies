@@ -4,12 +4,12 @@ import { useMovies } from "../context/MovieContext";
 
 
 function HeroSection() {
-  const { trendingMovies, loading } = useMovies();
+  const { nowPlayingMovies, loading } = useMovies();
   const [currentSlide, setCurrentSlide] = useState(0);
   const [isTransitioning, setIsTransitioning] = useState(false);
     const {openMovieDetails} = useMovies();
 
-  const featureTrendingMovies = trendingMovies.slice(0, 5);
+  const featureTrendingMovies = nowPlayingMovies.slice(0, 5);
 
     const handleMovieClick = (movieId)=>{
     openMovieDetails(movieId);
@@ -74,7 +74,7 @@ function HeroSection() {
           >
             <div className="flex items-center flex-wrap space-x-3 mb-4 text-sm">
               <span className="bg-blue-500/90 text-white font-semibold px-2 py-0.5 rounded-sm">
-                FEATURED
+                NOW PLAYING MOVIE
               </span>
               <div className="flex items-center text-neutral-300">
                 <Star className="w-4 h-4 text-yellow-500 mr-1" />

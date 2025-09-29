@@ -17,7 +17,6 @@ const Navbar = () => {
   // Navigation items
   const navItems = [
     { id: "home", label: "Home" },
-    { id: "movies", label: "Movies" },
     { id: "topRated", label: "Top Rated" },
     { id: "trending", label: "Trending" },
     { id: "popular", label: "Popular" }

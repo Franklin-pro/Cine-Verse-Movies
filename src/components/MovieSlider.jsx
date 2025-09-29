@@ -9,7 +9,7 @@ import { useMovies } from "../context/MovieContext";
 function MovieSlider({ title, subtitle = "", movies }) {
   const sliderRef = useRef(null);
   const {openMovieDetails} = useMovies();
-  const [setHoveblueMovieId] = useState(null)
+  const [hoveblueMovieId,setHoveblueMovieId] = useState(null)
 
   const handleMovieClick = (movieId)=>{
     openMovieDetails(movieId);

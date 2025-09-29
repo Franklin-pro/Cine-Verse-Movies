@@ -6,7 +6,8 @@ import MovieDetails from './MovieDetails'
 import { useMovies } from '../context/MovieContext'
 
 function MovieContent() {
-  const { trendingMovies, topRatedMovies, popularMovies, selectMovieId, closeMovieDetails, error } = useMovies();
+  const { topRatedMovies,upcomingMovies,latestMovies,nowPlayingMovies,trendingweekly, popularMovies, selectMovieId, closeMovieDetails, error } = useMovies();
+  console.log("nowwwwwwww",nowPlayingMovies);
 
   if (error) return <div className='text-white text-center py-8'>{error}</div>
   
@@ -17,21 +18,26 @@ function MovieContent() {
         <HeroSection />
       </section>
 
-      {/* Movies Section */}
-      <section id="movies" className="bg-gradient-to-b from-neutral-900 to-neutral-950">
-        <div className="container mx-auto px-4 py-8">
-          <h2 className="text-3xl font-bold text-white mb-2">Movies</h2>
-          <p className="text-neutral-400 mb-8">Discover amazing movies</p>
-          {/* You can add movie grid or other content here */}
-        </div>
-      </section>
-
       {/* Trending Section */}
       <section id="trending" className="bg-gradient-to-b from-neutral-900 to-neutral-950">
         <MovieSlider
           title="Trending This Week"
           subtitle="Stay Updated with What's everyone's watching"
-          movies={trendingMovies}
+          movies={trendingweekly}
+        />
+      </section>
+        <section id="Latest Movies" className="bg-gradient-to-b from-neutral-900 to-neutral-950">
+        <MovieSlider
+          title="Latest Movies"
+          subtitle="Latest Movies of All Time"
+          movies={latestMovies}
+        />
+      </section>
+           <section id="upcoming" className="bg-gradient-to-b from-neutral-900 to-neutral-950">
+        <MovieSlider
+          title="Upcoming Movies"
+          subtitle="Upcoming Movies of All Time"
+          movies={upcomingMovies}
         />
       </section>
 
@@ -57,6 +63,7 @@ function MovieContent() {
           movies={topRatedMovies}
         />
       </section>
+
 
       {/* Movie Details Modal */}
       {selectMovieId && (

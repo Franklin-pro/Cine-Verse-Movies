@@ -4,6 +4,18 @@ const BASE_URL = "https://api.themoviedb.org/3";
 export const getTrendingMovies = async () => {
   try {
     const response = await fetch(
+      `${BASE_URL}/trending/movie/day?api_key=${API_KEY}&language=en-US`
+    );
+    const data = await response.json();
+    return data.results;
+  } catch (error) {
+    console.error("Error fetching movies day:", error);
+    return [];
+  }
+};
+export const getTrendingWeekMovies = async () => {
+  try {
+    const response = await fetch(
       `${BASE_URL}/trending/movie/week?api_key=${API_KEY}&language=en-US`
     );
     const data = await response.json();
@@ -81,7 +93,44 @@ export const getGenres = async () => {
     return [];
   }
 };
+export const getLatestMovies = async () => {
+  try {
+    const response = await fetch(
+      `${BASE_URL}/movie/latest?api_key=${API_KEY}&language=en-US`
+    );
+    const data = await response.json();
+    return data.results;
+  } catch (error) {
+    console.error("Error fetching movies:", error);
+    return [];
+  }
+};
+export const getNowPlayingMovies = async ()=>{
+ try {
+    const response = await fetch(
+      `${BASE_URL}/movie/now_playing?api_key=${API_KEY}&language=en-US`
+    );
+    const data = await response.json();
+    console.log("now playinggg",data.results);
+    return data.results;
+  } catch (error) {
+    console.error("Error fetching movies:", error);
+    return [];
+  }
+}
 
+export const getUpcomingMovies = async () => {
+  try {
+    const response = await fetch(
+      `${BASE_URL}/movie/upcoming?api_key=${API_KEY}&language=en-US&page=1`
+    );
+    const data = await response.json();
+    return data.results;
+  } catch (error) {
+    console.error("Error fetching movies:", error);
+    return [];
+  }
+};
 
 export const searchMovies = async (query) => {
   try {
