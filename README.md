@@ -1,16 +1,24 @@
-# React + Vite
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+this platform movies website
 
-Currently, two official plugins are available:
+Homepage
+<img width="1854" height="944" alt="Screenshot 2025-09-29 090556" src="https://github.com/user-attachments/assets/31758c05-cc93-49b8-934f-e908fb40998a" />
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
 
-## React Compiler
+browse by genre
+<img width="1869" height="892" alt="image" src="https://github.com/user-attachments/assets/3a1a01c7-e5e2-4647-85bd-0f9741431d7b" />
 
-The React Compiler is not enabled on this template. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+trending movies of the week 
+<img width="1863" height="859" alt="Screenshot 2025-09-29 090617" src="https://github.com/user-attachments/assets/7d29d5f4-9c3b-4013-ae3e-37733502720e" />
 
-## Expanding the ESLint configuration
+popular Movies
+<img width="1867" height="928" alt="Screenshot 2025-09-29 090639" src="https://github.com/user-attachments/assets/78d9ed50-681d-49e0-ae43-7ae4b1255bb1" />
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+topRated Movies
+<img width="1853" height="890" alt="image" src="https://github.com/user-attachments/assets/6171905f-5b84-47c1-84a1-f91b214397f1" />
+
+
+
+
+
+
